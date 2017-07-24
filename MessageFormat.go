@@ -20,20 +20,19 @@ type InternetPackage struct {
 	ptype		byte
 	state		byte
 	reserve		byte
-	id			int32
-	X			float32
-	Y			float32
-	Z			float32
-	toX			float32
-	toY			float32
-	toZ			float32
+	id		int32
+	X		float32
+	Y		float32
+	Z		float32
+	toX		float32
+	toY		float32
+	toZ		float32
 }
 
-
 func BytesToFloat32(b []byte) float32 {
-    bytesBuffer := bytes.NewBuffer(b)
-    var tmp float32
-    binary.Read(bytesBuffer, binary.LittleEndian, &tmp)
+	bytesBuffer := bytes.NewBuffer(b)
+	var tmp float32
+	binary.Read(bytesBuffer, binary.LittleEndian, &tmp)
 	return tmp
 }
 
@@ -57,6 +56,7 @@ func Int32ToBytes(i int32) []byte {
 	return bytesBuffer.Bytes()
 }
 
+//代码待优化
 func EntityToBytes(p InternetPackage) []byte {
 	bytesBuffer := make([]byte, 32)
 	bytesBuffer[0] = p.check
