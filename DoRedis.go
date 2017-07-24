@@ -49,7 +49,7 @@ func RedisAddEntity(client *redis.Client, redis_package InternetPackage) int32 {
 }
 
 func RedisGetEntity(client *redis.Client, key string) (map[string]string, int32) {
-	var val  map[string]string
+	var val map[string]string
 
 	if client.Exists(key).Val() == 0 {
 		fmt.Println("Not exists !")
@@ -73,15 +73,15 @@ func RedisChangeEntity(client *redis.Client, redis_package InternetPackage) int3
 	}
 
 	infomap := make(map[string]interface{})
-    infomap["ptype"] = redis_package.ptype
-    infomap["state"] = redis_package.state
-    infomap["reserve"] = redis_package.reserve
-    infomap["X"] = redis_package.X
-    infomap["Y"] = redis_package.Y
-    infomap["Z"] = redis_package.Z
-    infomap["toX"] = redis_package.toX
-    infomap["toY"] = redis_package.toY
-    infomap["toZ"] = redis_package.toZ
+	infomap["ptype"] = redis_package.ptype
+	infomap["state"] = redis_package.state
+	infomap["reserve"] = redis_package.reserve
+	infomap["X"] = redis_package.X
+	infomap["Y"] = redis_package.Y
+	infomap["Z"] = redis_package.Z
+	infomap["toX"] = redis_package.toX
+	infomap["toY"] = redis_package.toY
+	infomap["toZ"] = redis_package.toZ
 
 	err := client.HMSet(key, infomap).Err()
 	if err != nil {
@@ -93,10 +93,10 @@ func RedisChangeEntity(client *redis.Client, redis_package InternetPackage) int3
 }
 
 func RedisDeleteEntity(client *redis.Client, key string) int32 {
-    if client.Exists(key).Val() == 0 {
-        fmt.Println("Not exists !")
-        return -1
-    }
+	if client.Exists(key).Val() == 0 {
+		fmt.Println("Not exists !")
+		return -1
+	}
 
 	err := client.Del(key).Err()
 	if err != nil {
