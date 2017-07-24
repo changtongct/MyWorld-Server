@@ -26,9 +26,9 @@ func logIn(conn net.Conn, messages chan InternetPackage, client *redis.Client) i
 	m_id := new_id
 	//发送生成的id
 	package_id := EntityToBytes(
-					InternetPackage{check: CHECK_BYTE, ptype: 1,
-					state: LOG_ALLOC_ID, reserve: 0, id: m_id,
-					X: 0, Y: 0, Z: 0, toX: 0, toY: 0, toZ: 0})
+				InternetPackage{check: CHECK_BYTE, ptype: 1,
+				state: LOG_ALLOC_ID, reserve: 0, id: m_id,
+				X: 0, Y: 0, Z: 0, toX: 0, toY: 0, toZ: 0})
 	_, err := conn.Write(package_id)
 	if err != nil {
 		return -1
@@ -48,13 +48,13 @@ func logIn(conn net.Conn, messages chan InternetPackage, client *redis.Client) i
 		return -4
 	}
 	package_login := InternetPackage{check: CHECK_BYTE, ptype: 1,
-                            state: LOG_IN, reserve: 0, id: m_id,
-                            X: BytesToFloat32(buf[8:12]),
-							Y: BytesToFloat32(buf[12:16]),
-							Z: BytesToFloat32(buf[16:20]),
-							toX: BytesToFloat32(buf[20:24]),
-							toY: BytesToFloat32(buf[24:28]),
-							toZ: BytesToFloat32(buf[28:32]),}
+					 state: LOG_IN, reserve: 0, id: m_id,
+					 X: BytesToFloat32(buf[8:12]),
+					 Y: BytesToFloat32(buf[12:16]),
+					 Z: BytesToFloat32(buf[16:20]),
+					 toX: BytesToFloat32(buf[20:24]),
+					 toY: BytesToFloat32(buf[24:28]),
+					 toZ: BytesToFloat32(buf[28:32]),}
 	//向所有用户广播上线信息
 	messages <- package_login
 
@@ -68,10 +68,11 @@ func logIn(conn net.Conn, messages chan InternetPackage, client *redis.Client) i
 		temptoX, _ := strconv.ParseFloat(entityinfo["toX"], 64)
 		temptoY, _ := strconv.ParseFloat(entityinfo["toY"], 64)
 		temptoZ, _ := strconv.ParseFloat(entityinfo["toZ"], 64)
-		package_exists := InternetPackage{check: CHECK_BYTE, ptype: 1,
-                            state: LOG_IN, reserve: 0, id: int32(tempid),
-                            X: float32(tempX), Y: float32(tempY), Z: float32(tempZ),
-							toX: float32(temptoX), toY: float32(temptoY), toZ: float32(temptoZ)}
+		package_exists := InternetPackage{
+					check: CHECK_BYTE, ptype: 1,
+					state: LOG_IN, reserve: 0, id: int32(tempid),
+					X: float32(tempX), Y: float32(tempY), Z: float32(tempZ),
+					toX: float32(temptoX), toY: float32(temptoY), toZ: float32(temptoZ)}
 //		fmt.Printf("EXISTS->%d,%f,%f,%f\n",package_exists.id,package_exists.X,package_exists.Y,package_exists.Z)
 		p := EntityToBytes(package_exists)
 		_, err := conn.Write(p)
@@ -87,8 +88,8 @@ func logIn(conn net.Conn, messages chan InternetPackage, client *redis.Client) i
 
 func logOff(m_id int32, messages chan InternetPackage, client *redis.Client) {
 	package_logoff := InternetPackage{check: CHECK_BYTE, ptype: 1,
-                            state: LOG_OFF, reserve: 0, id: m_id,
-                            X: 0, Y: 0, Z: 0, toX: 0, toY: 0, toZ: 0}
+                            	state: LOG_OFF, reserve: 0, id: m_id,
+                            	X: 0, Y: 0, Z: 0, toX: 0, toY: 0, toZ: 0}
 	messages <- package_logoff
 	RedisDeleteEntity(client, strconv.Itoa(int(m_id)))
 }
@@ -109,7 +110,7 @@ func Handler(conn net.Conn, messages chan InternetPackage, bullet_chan chan Inte
 		return -1
 	}
 	fmt.Println("登陆成功")
-	////
+	
 	defer logOff(m_id, messages, session_client)
 
 	buf := make([]byte, 1024)//设的比较大，防止溢出
@@ -128,17 +129,18 @@ func Handler(conn net.Conn, messages chan InternetPackage, bullet_chan chan Inte
 			return -1
 		}
 
-		p := InternetPackage {	check: buf[0],
-								ptype: buf[1],
-								state: buf[2],
-								reserve:buf[3],
-								id: BytesToInt32(buf[4:8]),
-								X: BytesToFloat32(buf[8:12]),
-								Y: BytesToFloat32(buf[12:16]),
-								Z: BytesToFloat32(buf[16:20]),
-								toX: BytesToFloat32(buf[20:24]),
-								toY: BytesToFloat32(buf[24:28]),
-								toZ: BytesToFloat32(buf[28:32])}
+		p := InternetPackage {	
+				check: buf[0],
+				ptype: buf[1],
+				state: buf[2],
+				reserve:buf[3],
+				id: BytesToInt32(buf[4:8]),
+				X: BytesToFloat32(buf[8:12]),
+				Y: BytesToFloat32(buf[12:16]),
+				Z: BytesToFloat32(buf[16:20]),
+				toX: BytesToFloat32(buf[20:24]),
+				toY: BytesToFloat32(buf[24:28]),
+				toZ: BytesToFloat32(buf[28:32])}
 
 		switch p.ptype {
 			case 1:
