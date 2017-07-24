@@ -37,9 +37,9 @@ func BytesToFloat32(b []byte) float32 {
 }
 
 func BytesToInt32(b []byte) int32 {
-    bytesBuffer := bytes.NewBuffer(b)
-    var tmp int32
-    binary.Read(bytesBuffer, binary.LittleEndian, &tmp)
+	bytesBuffer := bytes.NewBuffer(b)
+	var tmp int32
+	binary.Read(bytesBuffer, binary.LittleEndian, &tmp)
 	return tmp
 }
 
